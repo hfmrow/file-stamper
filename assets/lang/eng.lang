@@ -1,0 +1,162 @@
+{
+	"ProgInfos": {
+		"Name": "fileStamper",
+		"Version": "v1.0",
+		"Creat": "H.F.M",
+		"MainObjStructName": "mainObjects",
+		"GladeXmlFilename": "/media/syndicate/storage/Documents/dev/go/src/github.com/hfmrow/fileStamper/assets/glade/main.glade",
+		"GladeXmlFilenameRel": "../glade/main.glade"
+	},
+	"Language": {
+		"LangNameLong": "English",
+		"LangNameShrt": "eng",
+		"Author": "H.F.M",
+		"Date": "Sat, 09 Mar 2019 05:32:38",
+		"Updated": "Sun, 10 Mar 2019 03:35:39",
+		"Contributors": [
+			""
+		]
+	},
+	"Options": {
+		"SkipLowerCase": true,
+		"SkipEmptyLabel": false,
+		"DoBackup": true
+	},
+	"ObjectsCount": 11,
+	"Objects": [
+		{
+			"Class": "GtkButton",
+			"Id": "ButtonApply",
+			"Label": "Apply",
+			"Tooltip": "Applying timestamp to destination files",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkButton",
+			"Id": "ButtonExit",
+			"Label": "Exit",
+			"Tooltip": "Bye !",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkButton",
+			"Id": "ButtonInFiles",
+			"Label": "",
+			"Tooltip": "Getting timestamp from files that\ndropped in this control.\nClick on this control to reset entries",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkButton",
+			"Id": "ButtonOutFiles",
+			"Label": "",
+			"Tooltip": "Drop Files here to apply timestamp\nof the previous dropping job.\nClick on this control to reset entries",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkButton",
+			"Id": "ButtonUndo",
+			"Label": "Undo",
+			"Tooltip": "Go back to previous timestamp state",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkCheckButton",
+			"Id": "CheckbuttonAtime",
+			"Label": "Access",
+			"Tooltip": "Change last access time.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkCheckButton",
+			"Id": "CheckbuttonCtime",
+			"Label": "Create",
+			"Tooltip": "Change creation time.\nNot available at this time,\nHaven't find a way to write it.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkCheckButton",
+			"Id": "CheckbuttonIncludeDir",
+			"Label": "Directory",
+			"Tooltip": "Apply modification to directory too.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkCheckButton",
+			"Id": "CheckbuttonMtime",
+			"Label": "Modification",
+			"Tooltip": "Change modification time.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkCheckButton",
+			"Id": "CheckbuttonSubdir",
+			"Label": "Scan Subdir",
+			"Tooltip": "Scan files in subdirectories.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		},
+		{
+			"Class": "GtkImage",
+			"Id": "ImageMainTop",
+			"Label": "",
+			"Tooltip": "Click it to display Aboutbox.",
+			"Text": "",
+			"Uri": "",
+			"Markup": false,
+			"Comment": ""
+		}
+	],
+	"Sentences": {
+		"allow": "Allow",
+		"cancel": "Cancel",
+		"deny": "Deny",
+		"errChgTimestamp": "An error occurred on changing timestamp",
+		"errUndo": "An error occurred on undo timestamp",
+		"fileModified": "Files was modified",
+		"fileRestored": "Files was restored",
+		"inLoaded": "Input files, stored",
+		"inRst": "Input files, reseted",
+		"no": "No",
+		"noToDo": "Nothing to do",
+		"noToUndo": "Nothing to undo",
+		"ok": "Ok",
+		"openf": "Open file",
+		"outLoaded": "Output files, stored",
+		"outRst": "Output files, reseted",
+		"retry": "Retry",
+		"savef": "Save file",
+		"sbInFiles": "In files:",
+		"sbOutFiles": "Out files:",
+		"sbStatus": "Status:",
+		"yes": "Yes"
+	}
+}
