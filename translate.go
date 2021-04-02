@@ -1,12 +1,12 @@
 // translate.go
 
-// File generated on Sun, 10 Mar 2019 03:38:32 using Gotk3ObjectsTranslate v1.0 2019 H.F.M
+// File generated on Fri, 02 Apr 2021 16:00:44 using Gotk3 Objects Translate v1.5 2019-20 H.F.M
 
 /*
 * 	This program comes with absolutely no warranty.
 *	See the The MIT License (MIT) for details:
 *	https://opensource.org/licenses/mit-license.php
- */
+*/
 
 package main
 
@@ -15,8 +15,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
-	"path/filepath"
+	"strings"
 
 	"github.com/gotk3/gotk3/gtk"
 )
@@ -34,33 +33,40 @@ func (trans *MainTranslate) initGtkObjectsText() {
 	trans.setTextToGtkObjects(&mainObjects.CheckbuttonMtime.Widget, "CheckbuttonMtime")
 	trans.setTextToGtkObjects(&mainObjects.CheckbuttonSubdir.Widget, "CheckbuttonSubdir")
 	trans.setTextToGtkObjects(&mainObjects.ImageMainTop.Widget, "ImageMainTop")
+	trans.setTextToGtkObjects(&mainObjects.Statusbar.Widget, "Statusbar")
+}
+// Translations structure declaration. To be used in main application.
+var translate = new(MainTranslate)
+
+// sts: some sentences/words used in the application. Mostly used in Development mode.
+// You must add there all sentences used in your application. Or not ...
+// They'll be added to language file each time application started
+// when "devMode" is set at true.
+var sts = map[string]string{
+	`inLoaded`: `Input files, stored`,
+	`outLoaded`: `Output files, stored`,
+	`retry`: `Retry`,
+	`no`: `No`,
+	`ok`: `Ok`,
+	`inRst`: `Input files, reseted`,
+	`sbOutFiles`: `Out files:`,
+	`fileRestored`: `Files was restored`,
+	`savef`: `Save file`,
+	`sbStatus`: `Status:`,
+	`openf`: `Open file`,
+	`outRst`: `Output files, reseted`,
+	`fileModified`: `Files was modified`,
+	`cancel`: `Cancel`,
+	`deny`: `Deny`,
+	`noToUndo`: `Nothing to undo`,
+	`errChgTimestamp`: `An error occurred on changing timestamp`,
+	`errUndo`: `An error occurred on undo timestamp`,
+	`yes`: `Yes`,
+	`allow`: `Allow`,
+	`sbInFiles`: `In files:`,
+	`noToDo`: `Nothing to do`,
 }
 
-// sentences: some sentences/words used in the application.
-var sentences = map[string]string{
-	`savef`:           `Save file`,
-	`outRst`:          `Output files, reseted`,
-	`outLoaded`:       `Output files, stored`,
-	`openf`:           `Open file`,
-	`fileModified`:    `Files was modified`,
-	`sbInFiles`:       `In files:`,
-	`inRst`:           `Input files, reseted`,
-	`ok`:              `Ok`,
-	`sbStatus`:        `Status:`,
-	`retry`:           `Retry`,
-	`sbOutFiles`:      `Out files:`,
-	`allow`:           `Allow`,
-	`yes`:             `Yes`,
-	`deny`:            `Deny`,
-	`inLoaded`:        `Input files, stored`,
-	`cancel`:          `Cancel`,
-	`errChgTimestamp`: `An error occurred on changing timestamp`,
-	`errUndo`:         `An error occurred on undo timestamp`,
-	`fileRestored`:    `Files was restored`,
-	`no`:              `No`,
-	`noToDo`:          `Nothing to do`,
-	`noToUndo`:        `Nothing to undo`,
-}
 
 // Translations structure with methods
 type MainTranslate struct {
@@ -76,15 +82,15 @@ type MainTranslate struct {
 }
 
 // MainTranslateNew: Initialise new translation structure and assign language file content to GtkObjects.
-// devModeActive, indicate that the new sentences must be added to original language file
+// devModeActive, indicate that the new sentences must be added to previous language file.
 func MainTranslateNew(filename string, devModeActive ...bool) (mt *MainTranslate) {
+	var err error
 	mt = new(MainTranslate)
-	if _, err := os.Stat(filename); err == nil {
-		mt.read(filename)
+	if err = mt.read(filename); err == nil {
 		mt.initGtkObjectsText()
 		if len(devModeActive) != 0 {
 			if devModeActive[0] {
-				mt.Sentences = sentences
+				mt.Sentences = sts
 				err := mt.write(filename)
 				if err != nil {
 					fmt.Printf("%s\n%s\n", "Cannot write actual sentences to language file.", err.Error())
@@ -92,9 +98,9 @@ func MainTranslateNew(filename string, devModeActive ...bool) (mt *MainTranslate
 			}
 		}
 	} else {
-		fmt.Printf("%s\n%s\n", "Error loading language file !", err.Error())
+		fmt.Printf("%s\n%s\n", "Error loading language file !\nNot an error when you just creating from glade Xml or GOH project file.", err.Error())
 	}
-	return mt
+	return
 }
 
 // readFile: language file.
@@ -102,11 +108,10 @@ func (trans *MainTranslate) read(filename string) (err error) {
 	var textFileBytes []byte
 	if textFileBytes, err = ioutil.ReadFile(filename); err == nil {
 		if err = json.Unmarshal(textFileBytes, &trans); err == nil {
-			trans.ProgInfos.GladeXmlFilenameRel, _ = filepath.Rel(filepath.Dir(filename), trans.ProgInfos.GladeXmlFilename)
 			trans.objectsLoaded = true
 		}
 	}
-	return err
+	return
 }
 
 // Write json datas to file
@@ -118,70 +123,94 @@ func (trans *MainTranslate) write(filename string) (err error) {
 			err = ioutil.WriteFile(filename, out.Bytes(), 0644)
 		}
 	}
-	return err
+	return
 }
 
 type parsingFlags struct {
-	SkipLowerCase  bool
-	SkipEmptyLabel bool
-	DoBackup       bool
+	SkipLowerCase,
+	SkipEmptyLabel,
+	SkipEmptyName,
+	DoBackup bool
 }
 
 type progInfo struct {
-	Name                string
-	Version             string
-	Creat               string
-	MainObjStructName   string
-	GladeXmlFilename    string
-	GladeXmlFilenameRel string
+	Name,
+	Version,
+	Creat,
+	MainObjStructName,
+	GladeXmlFilename,
+	TranslateFilename,
+	ProjectRootDir,
+	GohProjFile string
 }
 
 type language struct {
-	LangNameLong string
-	LangNameShrt string
-	Author       string
-	Date         string
-	Updated      string
+	LangNameLong,
+	LangNameShrt,
+	Author,
+	Date,
+	Updated string
 	Contributors []string
 }
 
 type object struct {
-	Class   string
-	Id      string
-	Label   string
-	Tooltip string
-	Text    string
-	Uri     string
-	Markup  bool
+	Class,
+	Id,
+	Label,
+	Tooltip,
+	Text,
+	Uri,
 	Comment string
+	LabelMarkup,
+	LabelWrap,
+	TooltipMarkup bool
+	Idx int
 }
 
 // Define available property within objects
 type propObject struct {
-	Class   string
-	Label   bool
-	Tooltip bool
-	Markup  bool
-	Text    bool
-	Uri     bool
+	Class string
+	Label,
+	LabelMarkup,
+	LabelWrap,
+	Tooltip,
+	TooltipMarkup,
+	Text,
+	Uri bool
 }
 
-// Property that exists for GObject ...	(Used for Class)
+// Property that exists for Gtk3 Object ...	(Used for Class capability)
 var propPerObjects = []propObject{
-	{Class: "GtkButton", Label: true, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkToggleButton", Label: true, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkLabel", Label: true, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkSpinButton", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkEntry", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkCheckButton", Label: true, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkProgressBar", Label: false, Tooltip: true, Markup: true, Text: true, Uri: false},
-	{Class: "GtkSearchBar", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkImage", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkRadioButton", Label: true, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkComboBoxText", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkComboBox", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false},
-	{Class: "GtkLinkButton", Label: true, Tooltip: true, Markup: true, Text: false, Uri: true},
-	{Class: "GtkSwitch", Label: false, Tooltip: true, Markup: true, Text: false, Uri: false}}
+	{Class: "GtkButton", Label: true, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkMenuButton", Label: true, Tooltip: true, TooltipMarkup: true},
+
+	// {Class: "GtkToolButton", Label: true, Tooltip: true, TooltipMarkup: true},    // Deprecated since 3.10
+	// {Class: "GtkImageMenuItem", Label: true, Tooltip: true, TooltipMarkup: true}, // Deprecated since 3.10
+
+	{Class: "GtkMenuItem", Label: true, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkCheckMenuItem", Label: true, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkRadioMenuItem", Label: true, Tooltip: true, TooltipMarkup: true},
+
+	{Class: "GtkToggleButton", Label: true, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkLabel", Label: true, LabelMarkup: true, Tooltip: true, TooltipMarkup: true, LabelWrap: true},
+	{Class: "GtkSpinButton", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkEntry", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkCheckButton", Label: true, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkProgressBar", Tooltip: true, TooltipMarkup: true, Text: true},
+	{Class: "GtkSearchBar", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkImage", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkRadioButton", Label: true, LabelMarkup: false, Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkComboBoxText", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkComboBox", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkLinkButton", Label: true, Tooltip: true, TooltipMarkup: true, Uri: true},
+	{Class: "GtkSwitch", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkTreeView", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkFileChooserButton", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkTextView", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkSourceView", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkStatusbar", Tooltip: true, TooltipMarkup: true},
+	{Class: "GtkScrolledWindow", Tooltip: true, TooltipMarkup: true},
+}
 
 // setTextToGtkObjects: read translations from structure and set them to object.
 // like this: setTextToGtkObjects(&mainObjects.TransLabelHint.Widget, "TransLabelHint")
@@ -192,12 +221,19 @@ func (trans *MainTranslate) setTextToGtkObjects(obj *gtk.Widget, objectId string
 				if currObject.Class == props.Class {
 					if props.Label {
 						obj.SetProperty("label", currObject.Label)
+						if props.LabelMarkup {
+							obj.SetProperty("use-markup", currObject.LabelMarkup)
+							obj.SetProperty("label", strings.ReplaceAll(currObject.Label, "&", "&amp;"))
+						}
 					}
-					if props.Tooltip && !props.Markup {
+					if props.LabelWrap {
+						obj.SetProperty("wrap", currObject.LabelWrap)
+					}
+					if props.Tooltip && !currObject.TooltipMarkup {
 						obj.SetProperty("tooltip_text", currObject.Tooltip)
 					}
-					if props.Tooltip && props.Markup {
-						obj.SetProperty("tooltip_markup", currObject.Tooltip)
+					if props.Tooltip && currObject.TooltipMarkup {
+						obj.SetProperty("tooltip_markup", strings.ReplaceAll(currObject.Tooltip, "&", "&amp;"))
 					}
 					if props.Text {
 						obj.SetProperty("text", currObject.Text)
@@ -205,8 +241,10 @@ func (trans *MainTranslate) setTextToGtkObjects(obj *gtk.Widget, objectId string
 					if props.Uri {
 						obj.SetProperty("uri", currObject.Uri)
 					}
+					break
 				}
 			}
+			break
 		}
 	}
 }

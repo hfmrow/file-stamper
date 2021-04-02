@@ -19,7 +19,7 @@ import (
 
 	"github.com/gotk3/gotk3/gdk"
 	"github.com/gotk3/gotk3/gtk"
-	gi "github.com/hfmrow/fileStamper/gtk3Import"
+	gidg "github.com/hfmrow/gtk3Import/dialog"
 )
 
 // ButtonExitClicked:
@@ -31,7 +31,7 @@ func ButtonExitClicked() {
 func ButtonApplyClicked() {
 	if len(mainOptions.PrevOutFilesTs) != 0 {
 		if err := chgTimestamp(); err != nil {
-			gi.DlgMessage(mainObjects.MainWindow, "error", sts["errChgTimestamp"], err.Error(), "", sts["ok"])
+			gidg.DialogMessage(mainObjects.MainWindow, "error", sts["errChgTimestamp"], err.Error(), "", sts["ok"])
 		}
 	} else {
 		updateSb(fmt.Sprintf("%s", sts["noToDo"]))
@@ -60,7 +60,7 @@ func ButtonUndoClicked() {
 			}
 		}
 		if err != nil {
-			gi.DlgMessage(mainObjects.MainWindow, "error", sts["errUndo"], err.Error(), "", sts["ok"])
+			gidg.DialogMessage(mainObjects.MainWindow, "error", sts["errUndo"], err.Error(), "", sts["ok"])
 		}
 		updateSb(fmt.Sprintf("%d "+sts["fileRestored"], chgCount))
 	} else {
@@ -83,10 +83,10 @@ func ButtonInFilesClicked() {
 }
 
 // ButtonInFilesReceived: Store in files list
-func ButtonInFilesReceived(bti *gtk.Button, context *gdk.DragContext, x, y int, data_ptr uintptr, info, time uint) {
+func ButtonInFilesReceived(bti *gtk.Button, context *gdk.DragContext, x, y int, selData *gtk.SelectionData, info, time uint) {
 	currentInFilesList = []string{}
 	// Convert pointer to datas
-	data := gtk.GetData(data_ptr)
+	data := selData.GetData()
 	list := strings.Split(string(data), GetTextEOL(data))
 	for _, file := range list {
 		if len(file) != 0 {
@@ -100,10 +100,10 @@ func ButtonInFilesReceived(bti *gtk.Button, context *gdk.DragContext, x, y int, 
 }
 
 // ButtonOutFilesReceived: Store out files list
-func ButtonOutFilesReceived(bto *gtk.Button, context *gdk.DragContext, x, y int, data_ptr uintptr, info, time uint) {
+func ButtonOutFilesReceived(bto *gtk.Button, context *gdk.DragContext, x, y int, selData *gtk.SelectionData, info, time uint) {
 	currentOutFilesList = []string{}
 	// Convert pointer to datas
-	data := gtk.GetData(data_ptr)
+	data := selData.GetData()
 	list := strings.Split(string(data), GetTextEOL(data))
 	for _, file := range list {
 		if len(file) != 0 {

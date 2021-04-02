@@ -1,18 +1,20 @@
 {
 	"ProgInfos": {
-		"Name": "fileStamper",
-		"Version": "v1.0",
-		"Creat": "H.F.M",
+		"Name": "file-stamper",
+		"Version": "v1.1",
+		"Creat": "hfmrow",
 		"MainObjStructName": "mainObjects",
-		"GladeXmlFilename": "/media/syndicate/storage/Documents/dev/go/src/github.com/hfmrow/fileStamper/assets/glade/main.glade",
-		"GladeXmlFilenameRel": "../glade/main.glade"
+		"GladeXmlFilename": "assets/glade/main.glade",
+		"TranslateFilename": "translate.go",
+		"ProjectRootDir": "github.com/hfmrow/file-stamper",
+		"GohProjFile": "fileStamper.proj"
 	},
 	"Language": {
 		"LangNameLong": "English",
 		"LangNameShrt": "eng",
 		"Author": "H.F.M",
 		"Date": "Sat, 09 Mar 2019 05:32:38",
-		"Updated": "Sun, 10 Mar 2019 03:35:39",
+		"Updated": "Fri, 02 Apr 2021 16:01:12",
 		"Contributors": [
 			""
 		]
@@ -20,9 +22,10 @@
 	"Options": {
 		"SkipLowerCase": true,
 		"SkipEmptyLabel": false,
+		"SkipEmptyName": false,
 		"DoBackup": true
 	},
-	"ObjectsCount": 11,
+	"ObjectsCount": 12,
 	"Objects": [
 		{
 			"Class": "GtkButton",
@@ -31,8 +34,11 @@
 			"Tooltip": "Applying timestamp to destination files",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 0
 		},
 		{
 			"Class": "GtkButton",
@@ -41,8 +47,11 @@
 			"Tooltip": "Bye !",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 1
 		},
 		{
 			"Class": "GtkButton",
@@ -51,8 +60,11 @@
 			"Tooltip": "Getting timestamp from files that\ndropped in this control.\nClick on this control to reset entries",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 2
 		},
 		{
 			"Class": "GtkButton",
@@ -61,8 +73,11 @@
 			"Tooltip": "Drop Files here to apply timestamp\nof the previous dropping job.\nClick on this control to reset entries",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 3
 		},
 		{
 			"Class": "GtkButton",
@@ -71,8 +86,11 @@
 			"Tooltip": "Go back to previous timestamp state",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 4
 		},
 		{
 			"Class": "GtkCheckButton",
@@ -81,8 +99,11 @@
 			"Tooltip": "Change last access time.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 5
 		},
 		{
 			"Class": "GtkCheckButton",
@@ -91,8 +112,11 @@
 			"Tooltip": "Change creation time.\nNot available at this time,\nHaven't find a way to write it.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 6
 		},
 		{
 			"Class": "GtkCheckButton",
@@ -101,8 +125,11 @@
 			"Tooltip": "Apply modification to directory too.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 7
 		},
 		{
 			"Class": "GtkCheckButton",
@@ -111,8 +138,11 @@
 			"Tooltip": "Change modification time.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 8
 		},
 		{
 			"Class": "GtkCheckButton",
@@ -121,8 +151,11 @@
 			"Tooltip": "Scan files in subdirectories.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 9
 		},
 		{
 			"Class": "GtkImage",
@@ -131,8 +164,24 @@
 			"Tooltip": "Click it to display Aboutbox.",
 			"Text": "",
 			"Uri": "",
-			"Markup": false,
-			"Comment": ""
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 10
+		},
+		{
+			"Class": "GtkStatusbar",
+			"Id": "Statusbar",
+			"Label": "",
+			"Tooltip": "",
+			"Text": "",
+			"Uri": "",
+			"Comment": "",
+			"LabelMarkup": false,
+			"LabelWrap": false,
+			"TooltipMarkup": false,
+			"Idx": 11
 		}
 	],
 	"Sentences": {

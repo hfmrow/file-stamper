@@ -1,8 +1,11 @@
 // gohOptions.go
 
-// Source file auto-generated on Sun, 14 Jul 2019 13:07:22 using Gotk3ObjHandler v1.3 ©2019 H.F.M
-
 /*
+	Source file auto-generated on Fri, 02 Apr 2021 15:44:30 using Gotk3 Objects Handler v1.7.5 ©2018-21 hfmrow
+	This software use gotk3 that is licensed under the ISC License:
+	https://github.com/gotk3/gotk3/blob/master/LICENSE
+
+	Copyright ©2019-21 hfmrow - file-stamper v1.1 github.com/hfmrow/file-stamper
 	This program comes with absolutely no warranty. See the The MIT License (MIT) for details:
 	https://opensource.org/licenses/mit-license.php
 */
@@ -15,39 +18,39 @@ import (
 	"io/ioutil"
 	"os/exec"
 
-	gi "github.com/hfmrow/fileStamper/gtk3Import"
+	gidg "github.com/hfmrow/gtk3Import/dialog"
+	gimc "github.com/hfmrow/gtk3Import/misc"
 )
 
 // App infos
-var Name = "fileStamper"
-var Vers = "v1.0"
+var Name = "file-stamper"
+var Vers = "v1.1"
 var Descr = "This software allow you to clone timestamp between files"
-var Creat = "H.F.M"
-var YearCreat = "2019"
+var Creat = "hfmrow"
+var YearCreat = "2019-21"
 var LicenseShort = "This program comes with absolutely no warranty.\nSee the The MIT License (MIT) for details:\nhttps://opensource.org/licenses/mit-license.php"
 var LicenseAbrv = "License (MIT)"
-var Repository = "github.com/fileStamper"
+var Repository = "github.com/hfmrow/file-stamper"
 
 // Vars declarations
 var absoluteRealPath, optFilename = getAbsRealPath()
 var mainOptions *MainOpt
 var err error
 var tempDir string
+var doTempDir bool
 var currentOutFilesList []string
 var currentInFilesList []string
 
 // Translations
 var devMode bool
-var translate = new(MainTranslate)
-var sts map[string]string
 
 var nl = "\n"
 var execCmd *exec.Cmd
-var statusbar = new(gi.StatusBar)
+var statusbar = new(gimc.StatusBar)
 
 type MainOpt struct {
 	/* Public, will be saved and restored */
-	About         *gi.AboutInfos
+	About         *gidg.AboutInfos
 	MainWinWidth  int
 	MainWinHeight int
 
@@ -67,7 +70,7 @@ type MainOpt struct {
 // Main options initialisation
 func (opt *MainOpt) Init() {
 	/* Aboutbox initialisation */
-	opt.About = new(gi.AboutInfos)
+	opt.About = new(gidg.AboutInfos)
 
 	opt.LanguageFilename = "assets/lang/eng.lang"
 
@@ -113,6 +116,9 @@ func (opt *MainOpt) Write() (err error) {
 	var jsonData []byte
 	var out bytes.Buffer
 	opt.UpdateOptions()
+
+	opt.About.DlgBoxStruct = nil // remove dialog object before saving
+
 	if jsonData, err = json.Marshal(&opt); err == nil {
 		if err = json.Indent(&out, jsonData, "", "\t"); err == nil {
 			err = ioutil.WriteFile(optFilename, out.Bytes(), 0644)
