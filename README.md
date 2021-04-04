@@ -6,7 +6,7 @@
 
 Take a look [here, H.F.M repositories](https://github.com/hfmrow/) for other useful linux softwares.
 
-- If you just want to use it, simply download the compiled version '*.deb' under the "release" tab.
+- If you just want to use it, simply download the compiled version '*.deb' under the [Releases](https://github.com/hfmrow/file-stamper/releases) tab.
 
 - If you want to play inside code, see below "How to compile" section.
 
@@ -55,9 +55,11 @@ Take a look [here, H.F.M repositories](https://github.com/hfmrow/) for other use
 
 - To Produce a stand-alone executable, you must change inside "main.go" file:
   
-        func main() {
-            devMode = true
-        ...
+  ```go
+    func main() {
+        devMode = true
+    ...
+  ```
   
   into
   
