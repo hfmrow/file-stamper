@@ -1,4 +1,4 @@
-# File Stamper
+# File Stamper 1.1
 
 *This software allow you to clone timestamp between files.*
 
